@@ -21,7 +21,7 @@ githublink = 'https://github.com/pgelvin/304-titanic-dropdown.git'
 df = pd.read_csv("https://raw.githubusercontent.com/austinlasseter/plotly_dash_tutorial/master/00%20resources/titanic.csv")
 df['Female']=df['Sex'].map({'male':0, 'female':1})
 df['Cabin Class'] = df['Pclass'].map({1:'first', 2: 'second', 3:'third'})
-variables_list=['Survived', 'Female', 'Fare', 'Age']
+variables_list=['Survived', 'Embarked', 'Female', 'Fare', 'Age']
 
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -30,12 +30,19 @@ server = app.server
 app.title=tabtitle
 
 ####### Layout of the app ########
+# dropdown one
 app.layout = html.Div([
     html.H3('Choose a continuous variable for summary statistics:'),
     dcc.Dropdown(
         id='dropdown',
         options=[{'label': i, 'value': i} for i in variables_list],
         value=variables_list[0]
+    ),
+# dropdown two
+    dcc.Dropdown(
+        id='slicer',
+        options=[{'label': i, 'value': i} for i in variables_list],
+        value=variables_list[1]
     ),
     html.Br(),
     dcc.Graph(id='display-value'),
@@ -52,19 +59,19 @@ def display_value(continuous_var):
     grouped_mean=df.groupby(['Cabin Class', 'Embarked'])[continuous_var].mean()
     results=pd.DataFrame(grouped_mean)
     # Create a grouped bar chart
-    mydata1 = go.Scatter(
+    mydata1 = go.Pie(
         x=results.loc['first'].index,
         y=results.loc['first'][continuous_var],
         name='First Class',
         marker=dict(color=color1)
     )
-    mydata2 = go.Scatter(
+    mydata2 = go.Pie(
         x=results.loc['second'].index,
         y=results.loc['second'][continuous_var],
         name='Second Class',
         marker=dict(color=color2)
     )
-    mydata3 = go.Scatter(
+    mydata3 = go.Pie(
         x=results.loc['third'].index,
         y=results.loc['third'][continuous_var],
         name='Third Class',
