@@ -21,7 +21,7 @@ githublink = 'https://github.com/pgelvin/304-titanic-dropdown.git'
 df = pd.read_csv("https://raw.githubusercontent.com/austinlasseter/plotly_dash_tutorial/master/00%20resources/titanic.csv")
 df['Female']=df['Sex'].map({'male':0, 'female':1})
 df['Cabin Class'] = df['Pclass'].map({1:'first', 2: 'second', 3:'third'})
-variables_list=['Survived', 'Embarked', 'Female', 'Fare', 'Age']
+variables_list=['Survived', 'Embarked', 'Sex', 'Fare', 'Age']
 
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -55,8 +55,8 @@ app.layout = html.Div([
 ######### Interactive callbacks go here #########
 @app.callback(Output('display-value', 'figure'),
               [Input('dropdown', 'value'),Input('slicer','value')]) # dropdown one and two inputs
-def display_value(continuous_var):
-    grouped_mean=df.groupby(['Cabin Class', 'Embarked'])[continuous_var].mean()
+def display_value(continuous_var, second_dimension):
+    grouped_mean=df.groupby(['Cabin Class', second_dimension])[continuous_var].mean()
     results=pd.DataFrame(grouped_mean)
     # Create a grouped bar chart
     mydata1 = go.Bar(
@@ -79,8 +79,8 @@ def display_value(continuous_var):
     )
 
     mylayout = go.Layout(
-        title='Grouped Scatter chart',
-        xaxis = dict(title = 'Port of Embarkation'), # x-axis label
+        title='Grouped Bar chart',
+        xaxis = dict(title = str(second_dimension)), # x-axis label
         yaxis = dict(title = str(continuous_var)), # y-axis label
 
     )
