@@ -11,8 +11,8 @@ import plotly.graph_objs as go
 ###### Define your variables #####
 tabtitle = 'Titanic - Pat Gelvin'
 color1='#92A5E8'
-color2='#8E44AD'
-color3='#FFC300'
+color2='#333EFF'
+color3='#FF33FF'
 sourceurl = 'https://www.kaggle.com/c/titanic'
 githublink = 'https://github.com/pgelvin/304-titanic-dropdown.git'
 
@@ -21,7 +21,8 @@ githublink = 'https://github.com/pgelvin/304-titanic-dropdown.git'
 df = pd.read_csv("https://raw.githubusercontent.com/austinlasseter/plotly_dash_tutorial/master/00%20resources/titanic.csv")
 df['Female']=df['Sex'].map({'male':0, 'female':1})
 df['Cabin Class'] = df['Pclass'].map({1:'first', 2: 'second', 3:'third'})
-variables_list=['Survived', 'Embarked', 'Sex', 'Fare', 'Age']
+variables_list_1=['Survived', 'Embarked', 'Sex', 'Fare', 'Age']
+variables_list_2=['Survived', 'Embarked', 'Sex']
 
 ########### Initiate the app
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -32,17 +33,17 @@ app.title=tabtitle
 ####### Layout of the app ########
 # dropdown one
 app.layout = html.Div([
-    html.H3('Choose a continuous variable for summary statistics:'),
+    html.H3('Choose a dropdown variable for a statistical summary:'),
     dcc.Dropdown(
         id='dropdown',
-        options=[{'label': i, 'value': i} for i in variables_list],
-        value=variables_list[0]
+        options=[{'label': i, 'value': i} for i in variables_list_1],
+        value=variables_list_1[0]
     ),
 # dropdown two
     dcc.Dropdown(
         id='slicer',
-        options=[{'label': i, 'value': i} for i in variables_list],
-        value=variables_list[1]
+        options=[{'label': i, 'value': i} for i in variables_list_2],
+        value=variables_list_2[1]
     ),
     html.Br(),
     dcc.Graph(id='display-value'),
