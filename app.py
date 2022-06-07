@@ -54,7 +54,7 @@ app.layout = html.Div([
 
 ######### Interactive callbacks go here #########
 @app.callback(Output('display-value', 'figure'),
-              [Input('dropdown', 'value')]),Input('slicer','value')]) # dropdown one and two inputs
+              [Input('dropdown', 'value'),Input('slicer','value')]) # dropdown one and two inputs
 def display_value(continuous_var):
     grouped_mean=df.groupby(['Cabin Class', 'Embarked'])[continuous_var].mean()
     results=pd.DataFrame(grouped_mean)
