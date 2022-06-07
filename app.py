@@ -54,24 +54,24 @@ app.layout = html.Div([
 
 ######### Interactive callbacks go here #########
 @app.callback(Output('display-value', 'figure'),
-              [Input('dropdown', 'value')])
+              [Input('dropdown', 'value')]),Input('slicer','value')]) # dropdown one and two inputs
 def display_value(continuous_var):
     grouped_mean=df.groupby(['Cabin Class', 'Embarked'])[continuous_var].mean()
     results=pd.DataFrame(grouped_mean)
     # Create a grouped bar chart
-    mydata1 = go.Pie(
+    mydata1 = go.Bar(
         x=results.loc['first'].index,
         y=results.loc['first'][continuous_var],
         name='First Class',
         marker=dict(color=color1)
     )
-    mydata2 = go.Pie(
+    mydata2 = go.Bar(
         x=results.loc['second'].index,
         y=results.loc['second'][continuous_var],
         name='Second Class',
         marker=dict(color=color2)
     )
-    mydata3 = go.Pie(
+    mydata3 = go.Bar(
         x=results.loc['third'].index,
         y=results.loc['third'][continuous_var],
         name='Third Class',
